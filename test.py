@@ -1,0 +1,1 @@
+# brew install libagg pkg-config potrace
