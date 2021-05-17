@@ -5,6 +5,10 @@ name = "pypi"
 
 [packages]
 opencv-python = "*"
+numpy = "*"
+pillow = "*"
+ipykernel = "*"
+csdt-stl-tools = "*"
 
 [dev-packages]
 
