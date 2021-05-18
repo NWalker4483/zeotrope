@@ -32,22 +32,32 @@ def get_trace(data):
     bmp = potrace.Bitmap(data)
     path = bmp.trace(2, potrace.TURNPOLICY_MINORITY, 1.0, 1, .5)
     return path
-import cv2
-def build_frame(filename):
-    video = cv2.VideoCapture("data/walking.mp4")
-    _, test_frame = video.read()
 
-    path = get_trace(get_contours(image = test_frame))
-    pickle.dump(path, open( "path.p", "wb" ) )
-    for curve in path.curves:
-        segments = curve.segments
-        start = curve.start_pointπ
-        for segment in segments:
-            if not segment.is_corner:
-                # Create curve and randomize its points.
-                pass
-            start = segment.end_point
-build_frame(1)       
+import cv2
+video = cv2.VideoCapture("data/walking.mp4")
+ret, test_frame = video.read()
+
+with open("demo.txt", "w") as fh: # Clear previous file
+    pass
+frame = 0 
+frames2skip = 10 
+
+with open("demofile3.txt", "w") as fh:
+    while ret:
+        path = get_trace(get_contours(image = test_frame))
+
+        for curve in path.curves:
+            segments = curve.segments
+            start = curve.start_point
+            fh.write(f"{start}\n")
+            for segment in segments:
+                if not segment.is_corner:
+                    fh.write(f"{segment.c1} {segment.c2} {segment.end_point}\n")
+        
+            fh.write(f"#\n")
+        [video.read() for _ in range(frames2skip)]
+        ret, test_frame = video.read()
+
 #print(get_latex("../Images/box.jpg"))
 
 ## Get a list of points distributed along the curve.
